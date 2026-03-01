@@ -1,0 +1,16 @@
+\chapter{EXPERIMENTS AND RESULTS}
+
+This chapter presents the quantitative evaluation of the proposed FHE-LLM framework. The system is assessed based on cryptographic overhead, structural modifications, and linguistic preservation.
+
+\section{Experimental Setup}
+The experiments were conducted using open-source FHE libraries such as TenSEAL and Microsoft Concrete-ML. To isolate the variables, tests were performed on scaled-down Transformer architectures before applying the framework to larger benchmark models.
+
+\section{Performance Metrics}
+\subsection{Latency and Computational Overhead}
+Homomorphic multiplications drastically increase inference time. We present a detailed breakdown of the latency introduced per Transformer block, comparing the encrypted inference time against the plaintext baseline.
+
+\subsection{Memory Consumption}
+Ciphertext expansion causes significant memory bloat. This section evaluates the RAM requirements during the self-attention phase, highlighting the memory bottlenecks of the current approach.
+
+\section{Accuracy Evaluation}
+Replacing exact non-linear functions with polynomial approximations introduces computational noise. We evaluate the degradation in linguistic quality using standard NLP benchmarks (e.g., Perplexity, BLEU scores) to determine the viability of the approximate model.

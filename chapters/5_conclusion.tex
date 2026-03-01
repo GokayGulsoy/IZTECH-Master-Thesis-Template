@@ -1,0 +1,9 @@
+\chapter{CONCLUSION}
+
+This chapter summarizes the primary findings of the research, discusses the current limitations of implementing FHE in modern natural language processing, and proposes avenues for future development.
+
+\section{Summary of Contributions}
+This thesis successfully demonstrated a proof-of-concept for secure LLM inference using the CKKS homomorphic encryption scheme. By substituting non-linear activation functions with optimized polynomial approximations, the framework ensured absolute data privacy for the client without completely destroying the model's linguistic coherence.
+
+\section{Limitations and Future Work}
+While theoretically sound, the sheer computational and memory overhead of FHE prevents real-time deployment of this system on massive state-of-the-art LLMs using current consumer hardware. Future work should focus on Hardware Acceleration (such as FHE-specific ASICs or FPGAs) and exploring hybrid cryptographic systems that combine FHE with Multi-Party Computation (MPC) to reduce the latency bottleneck.

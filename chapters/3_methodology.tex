@@ -1,0 +1,12 @@
+\chapter{METHODOLOGY}
+
+This chapter details the proposed architecture for achieving secure inference in Large Language Models using Fully Homomorphic Encryption (FHE).
+
+\section{System Architecture}
+The privacy-preserving framework operates on a client-server model. The client encrypts the initial prompt using a public key before transmitting it to the cloud server. The server, hosting the LLM weights in plaintext, processes the encrypted embeddings using homomorphic addition and multiplication operations. The resulting encrypted output tokens are returned to the client, who decrypts them using the corresponding secret key.
+
+\section{Homomorphic Encryption Scheme}
+The Cheon-Kim-Kim-Song (CKKS) scheme was selected for its native support of approximate arithmetic over vector of real and complex numbers, making it highly suitable for neural network inferences.
+
+\section{Polynomial Approximations for Non-Linearity}
+A fundamental limitation of FHE is the inability to compute non-linear functions directly. In Transformer architectures, components such as the Softmax function in the self-attention mechanism and the GELU activation function in the feed-forward networks present significant bottlenecks. This section details the Taylor and Chebyshev polynomial approximation methods used to bypass these limitations while maintaining acceptable model accuracy.

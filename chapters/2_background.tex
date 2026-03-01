@@ -1,0 +1,26 @@
+\chapter{BACKGROUND AND RELATED WORK}
+
+This chapter provides the foundational concepts of Large Language Models (LLMs) and Homomorphic Encryption (HE), and reviews the recent literature on privacy-preserving machine learning frameworks.
+
+\section{Privacy Challenges in Large Language Models}
+The deployment of Large Language Models via cloud-based APIs has revolutionized natural language processing. However, this centralized Machine Learning as a Service (MLaaS) paradigm requires clients to transmit their prompts in plaintext to the server. When dealing with sensitive domains such as healthcare or corporate finance, this presents a severe vulnerability. The critical need for privacy in these platforms has been widely recognized in recent literature:
+
+\begin{quote}
+    The exposure of proprietary or personally identifiable information to third-party model providers constitutes one of the most significant barriers to the enterprise adoption of cloud-based LLMs. Guaranteeing the confidentiality of both the client's input query and the model's generated response without relying on trusted hardware enclaves is a paramount challenge for the next generation of secure artificial intelligence.
+\end{quote}
+
+To address these vulnerabilities, researchers are increasingly turning to advanced cryptographic solutions that allow computations to be performed directly on encrypted data without ever exposing the underlying plaintext.
+
+\section{Homomorphic Encryption and the CKKS Scheme}
+Fully Homomorphic Encryption (FHE) enables arbitrary mathematical operations to be evaluated on ciphertexts. For deep learning inference, the Cheon-Kim-Kim-Song (CKKS) scheme is particularly advantageous because it supports approximate arithmetic over vectors of real and complex numbers. 
+
+However, adapting modern Transformer architectures to the encrypted domain is highly non-trivial. The standard self-attention mechanism relies heavily on the Softmax function to compute attention scores:
+
+\begin{equation}
+    \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+\end{equation}
+
+Because FHE schemes like CKKS only natively support addition and multiplication operations, calculating exact non-linear functions is impossible. Consequently, functions such as Softmax and GELU must be replaced with carefully calibrated polynomial approximations to enable secure evaluation.
+
+\section{Existing Secure Inference Frameworks}
+Several frameworks have been proposed to facilitate FHE-based neural network inference.\footnote{Notable open-source libraries include Microsoft SEAL and TenSEAL, which provide high-level APIs for tensor operations using the CKKS scheme. However, these libraries currently face significant memory bloat issues when evaluating deep Transformer networks.} Recent works have successfully demonstrated secure inference on smaller models such as BERT-Tiny, though scaling these techniques to massive autoregressive LLMs remains a highly active area of research.

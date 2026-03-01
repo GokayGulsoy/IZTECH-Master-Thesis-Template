@@ -1,0 +1,35 @@
+\chapter{INTRODUCTION}
+
+Large Language Models (LLMs) have demonstrated unprecedented capabilities in natural language understanding, leading to their widespread deployment through Machine Learning as a Service (MLaaS) platforms. However, sending sensitive user data—such as medical records, legal documents, or proprietary corporate logic—to remote third-party servers raises severe privacy concerns. To mitigate these risks, advanced cryptographic techniques such as Fully Homomorphic Encryption (FHE) have emerged as a highly promising solution. FHE allows complex mathematical operations to be evaluated directly on ciphertexts, ensuring that the cloud server processes the prompt without ever accessing the plaintext data.
+
+Adapting modern neural networks to operate within an encrypted domain is a highly non-trivial task. Standard LLM architectures were designed for plaintext hardware acceleration, not the strict mathematical constraints of cryptographic rings. Consequently, ensuring data privacy currently comes at the cost of massive computational overhead and algorithmic restructuring. 
+
+\section{Motivation}
+Despite its theoretical elegance, integrating FHE with massive Transformer architectures introduces staggering memory requirements and latency bottlenecks. FHE schemes natively support only addition and multiplication, meaning the exact non-linear activation functions used in LLMs are fundamentally incompatible with the encrypted domain. 
+
+Table 1.1 illustrates the critical trade-offs between standard inference and FHE-based secure inference, highlighting the motivation for optimizing these cryptographic systems.
+
+\begin{table}[h]
+\centering
+\caption{Comparison of plaintext and FHE-based LLM inference paradigms.}
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Metric} & \textbf{Plaintext Inference} & \textbf{FHE Inference (CKKS)} \\ \hline
+Data Privacy & None (Server sees all) & Absolute (Server sees ciphertexts) \\ \hline
+Activation Functions & Exact (Softmax, GELU) & Approximate (Polynomials) \\ \hline
+Inference Latency & Milliseconds per token & Minutes per token \\ \hline
+\end{tabular}
+\end{table}
+
+\subsection{Problem Statement}
+The primary challenge addressed in this thesis is the architectural adaptation of the self-attention mechanism and feed-forward networks for the encrypted domain. Specifically, replacing exact non-linearities with low-degree polynomial approximations creates a delicate trade-off between natural language inference accuracy and cryptographic computational limits. 
+
+Figure 1.1 provides a placeholder for the high-level system architecture detailing how encrypted tokens are passed between the client and the LLM server.
+
+\begin{figure}[h]
+\centering
+\rule{10cm}{5cm} % This creates a dummy black box for your future architecture diagram
+\caption{High-level system architecture of the client-server FHE LLM framework.}
+\end{figure}
+
+By systematically analyzing these bottlenecks, this thesis aims to optimize polynomial approximations within the CKKS scheme to make secure LLM inference more practical without significantly degrading the model's linguistic coherence.

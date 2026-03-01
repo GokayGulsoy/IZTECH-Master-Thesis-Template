@@ -1,0 +1,36 @@
+\clearpage
+\chapter*{LIST OF SYMBOLS}
+\addcontentsline{toc}{chapter}{LIST OF SYMBOLS}
+\vspace{2\baselineskip}
+
+\noindent
+\begin{tabular}{@{}p{3.5cm}p{11cm}@{}}
+% --- Cryptography / FHE Symbols ---
+$\mathcal{E}(\cdot)$ & Encryption function \\
+$\mathcal{D}(\cdot)$ & Decryption function \\
+$pk$                 & Public key \\
+$sk$                 & Secret key \\
+$evk$                & Evaluation key (e.g., Relinearization or Galois keys) \\
+$ct$                 & Ciphertext \\
+$pt$                 & Plaintext (Message) \\
+$\Delta$             & Scaling factor in the CKKS encryption scheme \\
+$\mathcal{R}_q$      & Polynomial quotient ring modulo $q$ \\
+$N$                  & Polynomial ring dimension (cyclotomic polynomial degree) \\
+$q, Q$               & Ciphertext modulus levels \\
+$\oplus$             & Homomorphic addition operation \\
+$\otimes$            & Homomorphic multiplication operation \\
+$\text{rot}(\cdot)$  & Homomorphic vector rotation \\
+
+\vspace{0.5cm} & \vspace{0.5cm} \\ % Adds a small gap between categories
+
+% --- LLM / Transformer Symbols ---
+$Q, K, V$            & Query, Key, and Value matrices in Self-Attention \\
+$W_Q, W_K, W_V$      & Learned weight projections for Attention mechanism \\
+$d_k$                & Dimension of the key/query vectors \\
+$H$                  & Hidden state representation matrix \\
+$L$                  & Sequence length (context window size) \\
+$\sigma(x)$          & Generic non-linear activation function \\
+$\text{softmax}(x)$  & Softmax normalization function \\
+$\text{GELU}(x)$     & Gaussian Error Linear Unit activation function \\
+$\approx$            & Polynomial approximation of a non-linear function \\
+\end{tabular}
