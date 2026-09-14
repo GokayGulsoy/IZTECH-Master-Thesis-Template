@@ -10,6 +10,7 @@
 \RequirePackage[T1]{fontenc}
 \RequirePackage[shorthands=off, turkish, english]{babel}
 \RequirePackage{graphicx}
+\RequirePackage{longtable}
 \RequirePackage{indentfirst}
 \RequirePackage{textcase}
 
@@ -28,7 +29,7 @@
     right=2.5cm,
     top=2.5cm,
     bottom=2.5cm,
-    footskip=1cm
+    footskip=0.5cm
 ]{geometry}
 
 % --- Spacing & Indentation (Section 2.4) ---
@@ -64,16 +65,35 @@
 }
 
 % --- Footnotes Formatting (Section 3.2.5) ---
+% Guide: footnotes sit at the bottom of the page they are referenced on,
+% indented 1 cm from the left text margin, under a broken line of 20 characters
+% (5 cm), single spaced, in 10 points. \footnotesize is exactly 10 pt at this
+% class's 12 pt base, so it is the correct size command here.
+%
+% \footnoterule is executed in internal vertical mode. \hspace expands to
+% \hskip, a horizontal command, which makes TeX start a paragraph and leave
+% vertical mode -- after which \hrule (vertical-mode only) raises
+% "You can't use `\hrule' here except with leaders". \rule is a box instead of
+% a TeX primitive rule, so it is safe in horizontal mode; wrapping the whole
+% thing in an \hbox keeps the surrounding \kern values in vertical mode.
 \renewcommand{\footnoterule}{%
-  \kern -3pt
-  \hspace{1cm}\hrule width 5cm height 0.4pt
-  \kern 2.6pt
+  \kern-3pt%
+  \hbox to \textwidth{\hspace*{1cm}\rule{5cm}{0.4pt}\hfil}%
+  \kern2.6pt%
 }
 
+% \hspace* rather than \hspace: unstarred horizontal space is discardable at a
+% line break, which would drop the required 1 cm indent on the first line.
 \renewcommand\@makefntext[1]{%
     \singlespacing\footnotesize%
-    \hspace{1cm}\@thefnmark \hspace{0.5em} #1%
+    \noindent\hspace*{1cm}\@thefnmark\hspace*{0.5em}#1%
 }
+
+% Guide: footnotes are "sequential ... for the entire thesis". The report class
+% resets the counter at every \chapter, which would restart numbering in each
+% chapter, so the reset is removed here.
+\RequirePackage{chngcntr}
+\counterwithout{footnote}{chapter}
 
 \interfootnotelinepenalty=10000
 
@@ -98,11 +118,12 @@
 
 \setlength{\cftsecindent}{2em}
 \setlength{\cftsubsecindent}{4em}
+\setlength{\cftsubsubsecindent}{6em}
 \setlength{\cftfigindent}{0pt}
 \setlength{\cfttabindent}{0pt}
 
-\cftsetpnumwidth{2.5em}
-\cftsetrmarg{3.5em}
+\cftsetpnumwidth{2.0em}
+\cftsetrmarg{5.5em}
 
 \renewcommand{\cfttoctitlefont}{\hfill\normalfont\fontsize{16}{19.2}\bfseries\MakeTextUppercase}
 \renewcommand{\cftaftertoctitle}{\hfill}
@@ -116,18 +137,24 @@
 
 \renewcommand{\cftfigpresnum}{Figure }
 \renewcommand{\cftfigaftersnum}{.}
-\settowidth{\cftfignumwidth}{Figure 10.10.\quad}
+\newlength{\myfigtmp}
+\settowidth{\myfigtmp}{Figure 10.10.\quad}
+\setlength{\cftfignumwidth}{\myfigtmp}
 
 \renewcommand{\cfttabpresnum}{Table }
 \renewcommand{\cfttabaftersnum}{.}
-\settowidth{\cfttabnumwidth}{Table 10.10.\quad}
+\newlength{\mytabtmp}
+\settowidth{\mytabtmp}{Table 10.10.\quad}
+\setlength{\cfttabnumwidth}{\mytabtmp}
 
 % Safely redefining the List commands to inject the bold/underlined column headers
 \renewcommand{\listoffigures}{%
     \clearpage
     \chapter*{\listfigurename}%
     \addcontentsline{toc}{chapter}{\listfigurename}%
-    \noindent\textbf{\underline{Figure}}\hfill\makebox[\@pnumwidth][r]{\textbf{\underline{Page}}}\par
+    \vspace{\baselineskip}%
+    {\leftskip 0pt\rightskip\@tocrmarg\parfillskip -\rightskip\parindent 0pt\relax
+    \textbf{\underline{Figure}}\hfill\hb@xt@\@pnumwidth{\hfil\textbf{\underline{Page}}}\par}%
     \vspace{0.5\baselineskip}%
     \@starttoc{lof}%
 }
@@ -136,7 +163,9 @@
     \clearpage
     \chapter*{\listtablename}%
     \addcontentsline{toc}{chapter}{\listtablename}%
-    \noindent\textbf{\underline{Table}}\hfill\makebox[\@pnumwidth][r]{\textbf{\underline{Page}}}\par
+    \vspace{\baselineskip}%
+    {\leftskip 0pt\rightskip\@tocrmarg\parfillskip -\rightskip\parindent 0pt\relax
+    \textbf{\underline{Table}}\hfill\hb@xt@\@pnumwidth{\hfil\textbf{\underline{Page}}}\par}%
     \vspace{0.5\baselineskip}%
     \@starttoc{lot}%
 }
@@ -159,6 +188,11 @@
   {\normalfont\fontsize{14}{16.8}\bfseries}
   {\thesubsection.}{1em}{}
 \titlespacing*{\subsection}{0pt}{2\baselineskip}{2\baselineskip}
+
+\titleformat{\subsubsection}
+  {\normalfont\fontsize{14}{16.8}\bfseries}
+  {\thesubsubsection.}{1em}{}
+\titlespacing*{\subsubsection}{0pt}{2\baselineskip}{2\baselineskip}
 
 \RequirePackage[font={small}, labelfont=bf, labelsep=period]{caption}
 \captionsetup{skip=1.5\baselineskip}
@@ -212,12 +246,18 @@
         the Graduate School of Engineering and Sciences of\\
         İzmir Institute of Technology\\
         in Partial Fulfillment of the Requirements for the Degree of\par}
-        \vspace{4\baselineskip plus 0pt minus 1\baselineskip}
+        % Figure 3.1 marks only four vertical gaps on the title page: 3x before
+        % the title, 10x after it, 4x before "by", and 7x before the date. The
+        % degree and program lines sit closer to the submitted-to block than a
+        % full 4x, so these two use 2x -- at 4x the date was pushed to ~94% of
+        % the page height against ~86% in the sample.
+        \vspace{2\baselineskip plus 0pt minus 1\baselineskip}
         {\fontsize{14}{16.8}\selectfont
         \textbf{\MakeUppercase{\TheDegree}}\par}
-        \vspace{4\baselineskip plus 0pt minus 1\baselineskip}
+        \vspace{2\baselineskip plus 0pt minus 1\baselineskip}
         {\fontsize{14}{16.8}\selectfont
         in \TheDepartment\par}
+        % 4x single spacing before "by" -- explicitly marked in Figure 3.1.
         \vspace{4\baselineskip plus 0pt minus 1\baselineskip}
         {\fontsize{14}{16.8}\selectfont
         by\\
@@ -241,7 +281,7 @@
 
 \newcommand{\makeapprovalpage}{
     \newpage
-    \thispagestyle{plain}
+    \thispagestyle{empty}
     \singlespacing
 
     \noindent We approve the thesis of \textbf{\TheAuthorName\ \MakeUppercase{\TheAuthorSurname}}\par
@@ -334,6 +374,7 @@
 \newenvironment{acknowledgmentsenv}{
     \newpage
     \chapter*{ACKNOWLEDGMENTS}
+    \thispagestyle{empty}
     \addcontentsline{toc}{chapter}{ACKNOWLEDGMENTS}
     \vspace{2\baselineskip}
     \onehalfspacing
