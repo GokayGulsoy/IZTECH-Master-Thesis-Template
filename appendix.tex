@@ -24,13 +24,90 @@
 %      and the report class resets figure/table counters per chapter.
 %    - TABLE captions go ABOVE the table; FIGURE captions go BELOW the figure.
 %    - Font inside tables/figures may be reduced, but never below 9 pt.
-%      With a 12 pt base, \small = 11 pt, \footnotesize = 10 pt and
-%      \scriptsize = 8 pt -- so do NOT go below \footnotesize.
+%      iztechthesis.cls raises \scriptsize and \tiny to 9 pt, so no size
+%      command goes below that minimum.
+%    - A table that runs over several pages repeats its caption as
+%      "Table A.1 (cont.)" and ends every page but the last with
+%      "(cont. on next page)": use longtable with the head and foot of
+%      Table A.1 below.
+%    - A figure or table taken from another work names its source under the
+%      caption: \sourceline{\cite{key}} (defined in main.tex).
 % =====================================================================
 
-\chapter{PIPELINE CONFIGURATION}
-\label{app:config}
+\chapter{FORMAT OF DISKETTES/CD CONTAINING COMPUTER SOFTWARE}
+\label{app:software}
 
+This is the text for Appendix A. Table~\ref{tab:app-long} shows how a table that runs over several pages is continued: its caption is repeated as ``Table~A.1 (cont.)'' on every following page, and every page but the last ends with ``(cont. on next page)''.
 
+{\small
+\begin{longtable}{p{4.2cm}p{3.6cm}p{5.7cm}}
+\caption{An example of a table continued over several pages.}
+\label{tab:app-long}\\
+\toprule
+\textbf{Item} & \textbf{Value} & \textbf{Description} \\
+\midrule
+\endfirsthead
+\caption*{\textbf{Table \thetable} (cont.)}\\
+\toprule
+\textbf{Item} & \textbf{Value} & \textbf{Description} \\
+\midrule
+\endhead
+\bottomrule
+\multicolumn{3}{r}{(cont. on next page)}\\
+\endfoot
+\bottomrule
+\endlastfoot
+Item 1 & Value 1 & Description of item 1 \\
+Item 2 & Value 2 & Description of item 2 \\
+Item 3 & Value 3 & Description of item 3 \\
+Item 4 & Value 4 & Description of item 4 \\
+Item 5 & Value 5 & Description of item 5 \\
+Item 6 & Value 6 & Description of item 6 \\
+Item 7 & Value 7 & Description of item 7 \\
+Item 8 & Value 8 & Description of item 8 \\
+Item 9 & Value 9 & Description of item 9 \\
+Item 10 & Value 10 & Description of item 10 \\
+Item 11 & Value 11 & Description of item 11 \\
+Item 12 & Value 12 & Description of item 12 \\
+Item 13 & Value 13 & Description of item 13 \\
+Item 14 & Value 14 & Description of item 14 \\
+Item 15 & Value 15 & Description of item 15 \\
+Item 16 & Value 16 & Description of item 16 \\
+Item 17 & Value 17 & Description of item 17 \\
+Item 18 & Value 18 & Description of item 18 \\
+Item 19 & Value 19 & Description of item 19 \\
+Item 20 & Value 20 & Description of item 20 \\
+Item 21 & Value 21 & Description of item 21 \\
+Item 22 & Value 22 & Description of item 22 \\
+Item 23 & Value 23 & Description of item 23 \\
+Item 24 & Value 24 & Description of item 24 \\
+Item 25 & Value 25 & Description of item 25 \\
+Item 26 & Value 26 & Description of item 26 \\
+Item 27 & Value 27 & Description of item 27 \\
+Item 28 & Value 28 & Description of item 28 \\
+Item 29 & Value 29 & Description of item 29 \\
+Item 30 & Value 30 & Description of item 30 \\
+Item 31 & Value 31 & Description of item 31 \\
+Item 32 & Value 32 & Description of item 32 \\
+Item 33 & Value 33 & Description of item 33 \\
+Item 34 & Value 34 & Description of item 34 \\
+Item 35 & Value 35 & Description of item 35 \\
+Item 36 & Value 36 & Description of item 36 \\
+Item 37 & Value 37 & Description of item 37 \\
+Item 38 & Value 38 & Description of item 38 \\
+Item 39 & Value 39 & Description of item 39 \\
+Item 40 & Value 40 & Description of item 40 \\
+Item 41 & Value 41 & Description of item 41 \\
+Item 42 & Value 42 & Description of item 42 \\
+Item 43 & Value 43 & Description of item 43 \\
+Item 44 & Value 44 & Description of item 44 \\
+Item 45 & Value 45 & Description of item 45 \\
+Item 46 & Value 46 & Description of item 46 \\
+Item 47 & Value 47 & Description of item 47 \\
+Item 48 & Value 48 & Description of item 48 \\
+\end{longtable}}
 
+\chapter{THE MATERIALS WHICH WILL BE ADMITTED TO THE GRADUATE SCHOOL}
+\label{app:materials}
 
+This is the text for Appendix B.
