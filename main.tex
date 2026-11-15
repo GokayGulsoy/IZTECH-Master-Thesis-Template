@@ -1,19 +1,36 @@
 \documentclass{iztechthesis}
 
 \usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\usepackage{subcaption}
 
-% --- Bibliography Setup ---
+% --- Clickable internal links (TOC, LOF, LOT, citations) ---
+\usepackage[hidelinks, bookmarks=true, bookmarksnumbered=true, pdfusetitle, linktoc=section]{hyperref}
+
+% Source line under the caption of a figure or table taken from another work (guide Section 3.2.2)
+\newcommand{\sourceline}[1]{\par{\centering(Source: #1)\par}}
+
+% --- Bibliography setup ---
 \usepackage{csquotes}
 \DeclareQuoteStyle{turkish}{\textquotedblleft}{\textquotedblright}{\textquoteleft}{\textquoteright}
 
 \usepackage[backend=biber, style=ieee]{biblatex}
 \addbibresource{references.bib}
+\setcounter{biburllcpenalty}{7000}
+\setcounter{biburlucpenalty}{8000}
+\setcounter{biburlnumpenalty}{9000}
+\appto{\bibsetup}{\sloppy}
 
-% IZTECH Bibliography Spacing Rules
-\AtBeginBibliography{\singlespacing}
-\setlength{\bibitemsep}{1.5\baselineskip}
+% IZTECH bibliography spacing rules: entries single spaced, one blank single-spaced line between them
+\AtBeginBibliography{\singlespacing\vspace{-\topsep}}
+\setlength{\bibitemsep}{14.5pt}
 
-% --- Thesis Information ---
+% --- Thesis information ---
 \thesistitle{Secure Inference in Large Language Models Using Homomorphic Encryption}
 \thesistitleTR{Homomorfik Şifreleme Kullanarak Büyük Dil Modellerinde Güvenli Çıkarım}
 \authorname{Gökay}
@@ -23,42 +40,42 @@
 \submissiondate{[Month] 2026}
 \examdate{[Day] [Month] 2026}
 
-% --- Committee Information ---
+% --- Committee information ---
 \setmemberone{TITLE Name LASTNAME}{Computer Engineering, IZTECH}
 \setmembertwo{TITLE Name LASTNAME}{Computer Engineering, IZTECH}
 \setmemberthree{TITLE Name LASTNAME}{Computer Engineering, Ege University}
-\setmemberfour{TITLE Name LASTNAME}{Computer Engineering, IZTECH} 
-\setmemberfive{TITLE Name LASTNAME}{Computer Engineering, IZTECH} 
+\setmemberfour{TITLE Name LASTNAME}{Computer Engineering, IZTECH}
+\setmemberfive{TITLE Name LASTNAME}{Computer Engineering, IZTECH}
 
 \supervisor{Prof. Dr. Supervisor Name}{Computer Engineering, IZTECH}
-\cosupervisor{Co-Supervisor, Name of the Department}{Institution/University} 
+\cosupervisor{Co-Supervisor, Name of the Department}{Institution/University}
 \headofdept{Prof. Dr. Head Name}
 \dean{Prof. Dr. Dean Name}
 
 \begin{document}
 \selectlanguage{english}
 
-% --- Preliminary Pages (Roman Numerals) ---
+% --- Preliminary pages (Roman numerals) ---
 \pagenumbering{roman}
 
-\maketitle 
+\maketitle
 \setcounter{page}{2}
 \makeapprovalpage
 
-% --- Frontmatter Inclusions ---
-\input{frontmatter/abstract} % injects abstract
-\input{frontmatter/ozet} % injects özet
-\input{frontmatter/acknowledgments} % injects acknowlegments
+% --- Frontmatter (order per the IZTECH guide, Section 3) ---
+\input{frontmatter/acknowledgments}
+\input{frontmatter/abstract}
+\input{frontmatter/ozet}
 
-% --- Tables of Contents and Lists ---
+% --- Tables of contents and lists ---
 \tableofcontents
 \listoffigures
 \listoftables
-\input{frontmatter/abbreviations} % injects list of abbreviations
-\input{frontmatter/symbols} % injects list of symbols
+\input{frontmatter/abbreviations}
+\input{frontmatter/symbols}
 \clearpage
 
-% --- Main Body (Arabic Numerals) ---
+% --- Main body (Arabic numerals) ---
 \pagenumbering{arabic}
 
 \input{chapters/1_introduction}
@@ -70,17 +87,12 @@
 % --- References ---
 \clearpage
 \addcontentsline{toc}{chapter}{REFERENCES}
-\chapter*{REFERENCES} 
-\nocite{*} 
-\printbibliography[heading=none] 
+\chapter*{REFERENCES}
+\nocite{*}
+\printbibliography[heading=none]
 
-% --- Appendices ---
+% --- Appendices (guide Section 3.3.2) ---
 \appendix
-\chapter{FORMAT OF DISKETTES/CD CONTAINING COMPUTER SOFTWARE}
-% You can move these appendices into their own files later too! (e.g., \input{appendices/app_a})
-This is the text for Appendix A. 
-
-\chapter{THE MATERIALS WHICH WILL BE ADMITTED TO THE GRADUATE SCHOOL}
-This is the text for Appendix B. 
+\input{appendix}
 
 \end{document}

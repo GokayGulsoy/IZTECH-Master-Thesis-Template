@@ -34,9 +34,24 @@
 
 % --- Spacing & Indentation (Section 2.4) ---
 \RequirePackage{setspace}
+% Standard 1.5 spacing as on the guide's own pages: 0.73 cm between baselines of 12-point text,
+% the 1.5-line spacing of Times New Roman (setspace's own \onehalfspacing gives only 0.64 cm)
+\renewcommand{\onehalfspacing}{\setstretch{1.43}}
 \onehalfspacing
 \setlength{\parindent}{1.27cm}
 \setlength{\parskip}{0pt}
+
+% --- Page Breaks (Section 2.8): two lines of a paragraph at each page edge, no word split across pages ---
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+\brokenpenalty=10000
+% Section 2.2: a line that cannot be broken well is set loosely rather than run into the margin
+\setlength{\emergencystretch}{3em}
+
+% --- Reduced Sizes (Section 2.3): text in tables, figures and appendices is at least 9 points ---
+\renewcommand{\scriptsize}{\@setfontsize\scriptsize\@ixpt{11}}
+\renewcommand{\tiny}{\@setfontsize\tiny\@ixpt{11}}
 
 % --- Pagination (Section 2.9) ---
 \RequirePackage{fancyhdr}
@@ -56,12 +71,14 @@
 % --- Float & Equation Spacing (Section 3.2.2 & 3.2.3) ---
 \setlength{\intextsep}{2\baselineskip}
 \setlength{\textfloatsep}{2\baselineskip}
+\setlength{\floatsep}{3\baselineskip}
 
 \AtBeginDocument{
-    \setlength{\abovedisplayskip}{2\baselineskip}
-    \setlength{\belowdisplayskip}{2\baselineskip}
-    \setlength{\abovedisplayshortskip}{2\baselineskip}
-    \setlength{\belowdisplayshortskip}{2\baselineskip}
+    % 2x1.5 spacing (Section 3.2.3): one blank 1.5-spaced line between the text and an equation
+    \setlength{\abovedisplayskip}{\baselineskip}
+    \setlength{\belowdisplayskip}{\baselineskip}
+    \setlength{\abovedisplayshortskip}{\baselineskip}
+    \setlength{\belowdisplayshortskip}{\baselineskip}
 }
 
 % --- Footnotes Formatting (Section 3.2.5) ---
@@ -111,10 +128,11 @@
 \RequirePackage[titles]{tocloft}
 \renewcommand{\cftchapdotsep}{\cftdotsep}
 
-\setlength{\cftbeforechapskip}{1.0em}
-\setlength{\cftbeforesecskip}{0.5em}
-\setlength{\cftbeforefigskip}{0.5em}
-\setlength{\cftbeforetabskip}{0.5em}
+% As on the guide's own contents and figure pages: a blank line before each chapter entry only
+\setlength{\cftbeforechapskip}{0.73cm}
+\setlength{\cftbeforesecskip}{0pt}
+\setlength{\cftbeforefigskip}{0pt}
+\setlength{\cftbeforetabskip}{0pt}
 
 \setlength{\cftsecindent}{2em}
 \setlength{\cftsubsecindent}{4em}
@@ -127,6 +145,12 @@
 
 \renewcommand{\cfttoctitlefont}{\hfill\normalfont\fontsize{16}{19.2}\bfseries\MakeTextUppercase}
 \renewcommand{\cftaftertoctitle}{\hfill}
+% The first contents entry follows the heading directly, without the blank line before chapters
+\AtBeginDocument{\addtocontents{toc}{\protect\vspace{-0.73cm}}}
+
+% Regular weight for chapter-level entries, as on the guide's own contents page
+\renewcommand{\cftchapfont}{\normalfont}
+\renewcommand{\cftchappagefont}{\normalfont}
 
 \renewcommand{\cftchappresnum}{CHAPTER }
 \renewcommand{\cftchapaftersnum}{.}
@@ -152,49 +176,52 @@
     \clearpage
     \chapter*{\listfigurename}%
     \addcontentsline{toc}{chapter}{\listfigurename}%
-    \vspace{\baselineskip}%
     {\leftskip 0pt\rightskip\@tocrmarg\parfillskip -\rightskip\parindent 0pt\relax
     \textbf{\underline{Figure}}\hfill\hb@xt@\@pnumwidth{\hfil\textbf{\underline{Page}}}\par}%
-    \vspace{0.5\baselineskip}%
-    \@starttoc{lof}%
+    % The guide's list has no extra space between the figures of two chapters
+    {\let\addvspace\@gobble\@starttoc{lof}}%
 }
 
 \renewcommand{\listoftables}{%
     \clearpage
     \chapter*{\listtablename}%
     \addcontentsline{toc}{chapter}{\listtablename}%
-    \vspace{\baselineskip}%
     {\leftskip 0pt\rightskip\@tocrmarg\parfillskip -\rightskip\parindent 0pt\relax
     \textbf{\underline{Table}}\hfill\hb@xt@\@pnumwidth{\hfil\textbf{\underline{Page}}}\par}%
-    \vspace{0.5\baselineskip}%
-    \@starttoc{lot}%
+    {\let\addvspace\@gobble\@starttoc{lot}}%
 }
 
 % --- Headings Formatting (Section 3.2.1) ---
 \RequirePackage{titlesec}
+% Headings keep 1.5 spacing in the single-spaced appendices, so they look the same everywhere
 \titleformat{\chapter}[display]
-  {\normalfont\fontsize{16}{19.2}\bfseries\centering}
+  {\normalfont\setstretch{1.43}\fontsize{16}{19.2}\bfseries\centering}
   {\MakeTextUppercase{\chaptertitlename}\ \thechapter}
-  {2\baselineskip}
+  {1\baselineskip}
   {\fontsize{16}{19.2}\MakeTextUppercase}
-\titlespacing*{\chapter}{0pt}{2.5cm}{2\baselineskip}
+% Measured on the guide's own pages: the first heading line at the top margin, its baseline
+% 3.03 cm from the top edge, the title 2x1.5 lines below it and the text 1.81 cm below the title
+\titlespacing*{\chapter}{0pt}{-24.4pt}{31pt}
 
+% 2x1.5 spacing around headings, measured on the guide's pages: 1.65 cm between the baselines
+% of the text above and the heading, 1.63 cm between the heading and the text below
 \titleformat{\section}
   {\normalfont\fontsize{14}{16.8}\bfseries}
   {\thesection.}{1em}{}
-\titlespacing*{\section}{0pt}{2\baselineskip}{2\baselineskip}
+\titlespacing*{\section}{0pt}{23pt plus 3pt minus 2pt}{25.5pt}
 
 \titleformat{\subsection}
   {\normalfont\fontsize{14}{16.8}\bfseries}
   {\thesubsection.}{1em}{}
-\titlespacing*{\subsection}{0pt}{2\baselineskip}{2\baselineskip}
+\titlespacing*{\subsection}{0pt}{23pt plus 3pt minus 2pt}{25.5pt}
 
 \titleformat{\subsubsection}
   {\normalfont\fontsize{14}{16.8}\bfseries}
   {\thesubsubsection.}{1em}{}
-\titlespacing*{\subsubsection}{0pt}{2\baselineskip}{2\baselineskip}
+\titlespacing*{\subsubsection}{0pt}{23pt plus 3pt minus 2pt}{25.5pt}
 
-\RequirePackage[font={small}, labelfont=bf, labelsep=period]{caption}
+% Captions are 12 points like the text (Section 2.3) and may be single spaced (Section 2.4)
+\RequirePackage[font={normalsize,singlespacing}, labelfont=bf, labelsep=period]{caption}
 \captionsetup{skip=1.5\baselineskip}
 
 % --- Appendices Formatting (Section 3.3.2) ---
@@ -206,7 +233,7 @@
     \renewcommand{\thechapter}{\Alph{chapter}}
 
     \addtocontents{toc}{\protect\vspace{\cftbeforechapskip}}
-    \addtocontents{toc}{\noindent\textbf{APPENDICES}\par}
+    \addtocontents{toc}{\noindent APPENDICES\par}
 
     \addtocontents{toc}{\protect\renewcommand{\protect\cftchappresnum}{APPENDIX }}
     \addtocontents{toc}{\protect\settowidth{\protect\cftchapnumwidth}{APPENDIX W.\quad}}
@@ -238,6 +265,8 @@
     \begin{titlepage}
         \singlespacing
         \centering
+        % Every line of the sample title page (Figure 3.1) is bold
+        \bfseries
         \vspace*{3\baselineskip}
         {\fontsize{18}{21.6}\selectfont \textbf{\MakeUppercase{\TheThesisTitle}}\par}
         \vspace{10\baselineskip plus 0pt minus 2\baselineskip}
@@ -273,6 +302,7 @@
 \newcommand{\committeeline}[2]{%
     \vspace{1.1cm}
     \noindent\begin{minipage}{\textwidth}
+        \raggedright
         \rule{7cm}{0.4pt}\\
         \textbf{#1}\\
         #2
@@ -281,8 +311,12 @@
 
 \newcommand{\makeapprovalpage}{
     \newpage
+    \begingroup
     \thispagestyle{empty}
     \singlespacing
+    % The sample approval page breaks lines rather than justifying or hyphenating them
+    \raggedright
+    \hyphenpenalty=10000
 
     \noindent We approve the thesis of \textbf{\TheAuthorName\ \MakeUppercase{\TheAuthorSurname}}\par
     \vspace{1\baselineskip}
@@ -308,6 +342,7 @@
     \vspace{0.8cm}
     \noindent
     \begin{minipage}[t]{7cm}
+        \raggedright
         \rule{7cm}{0.4pt}\\
         \textbf{\TheSupervisorName}\\
         Supervisor, \TheSupervisorDept
@@ -315,6 +350,7 @@
     \hfill
     \begin{minipage}[t]{7cm}
         \@ifundefined{TheCoSupervisorName}{}{%
+            \raggedright
             \rule{7cm}{0.4pt}\\
             \textbf{\TheCoSupervisorName}\\
             Co-Supervisor, \TheCoSupervisorDept
@@ -324,31 +360,36 @@
     \vspace{2cm}
     \noindent
     \begin{minipage}[t]{7cm}
+        \raggedright
         \rule{7cm}{0.4pt}\\
         \textbf{\TheHeadOfDept}\\
         Head of the Department of \TheDepartment
     \end{minipage}%
     \hfill
     \begin{minipage}[t]{7cm}
+        \raggedright
         \rule{7cm}{0.4pt}\\
         \textbf{\TheDean}\\
         Dean of the Graduate School of\\
         Engineering and Sciences
     \end{minipage}
+    \par\endgroup
     \newpage
 }
 
 % --- Abstract & Özet Formatting ---
+% Figure 3.3: one 1.5-spaced line between the heading, the title and the text; the pages
+% before the table of contents are not listed in it, as on the guide's own contents page
+\newcommand{\abstracttitle}[1]{%
+    \vspace{-\baselineskip}%
+    {\centering\singlespacing\mdseries\fontsize{14}{16.8}\selectfont \MakeUppercase{#1}\par}%
+    \vspace{\baselineskip}%
+}
+
 \newenvironment{abstractenv}{
     \newpage
     \chapter*{ABSTRACT}
-    \addcontentsline{toc}{chapter}{ABSTRACT}
-    \vspace{\baselineskip}
-    \begin{center}
-        \singlespacing
-        {\mdseries\fontsize{14}{16.8}\selectfont \MakeUppercase{\TheThesisTitle}}
-    \end{center}
-    \vspace{\baselineskip}
+    \abstracttitle{\TheThesisTitle}
     \onehalfspacing
 }{
     \newpage
@@ -358,25 +399,18 @@
     \newpage
     \selectlanguage{turkish}%
     \chapter*{ÖZET}
-    \addcontentsline{toc}{chapter}{ÖZET}
-    \vspace{\baselineskip}
-    \begin{center}
-        \singlespacing
-        {\mdseries\fontsize{14}{16.8}\selectfont \MakeUppercase{\TheThesisTitleTR}}
-    \end{center}
-    \vspace{\baselineskip}
+    \abstracttitle{\TheThesisTitleTR}
     \onehalfspacing
 }{
     \selectlanguage{english}%
     \newpage
 }
 
+% Figure 3.4: two 1.5-spaced lines below the heading, which the chapter heading spacing gives
 \newenvironment{acknowledgmentsenv}{
     \newpage
     \chapter*{ACKNOWLEDGMENTS}
     \thispagestyle{empty}
-    \addcontentsline{toc}{chapter}{ACKNOWLEDGMENTS}
-    \vspace{2\baselineskip}
     \onehalfspacing
 }{
     \newpage
